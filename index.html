@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milakatze123's Scratch Profil</title>
+</head>
+<body>
+    <h1>Milakatze123's Scratch Profil</h1>
+    <p>Nachrichtenzähler: <span id="messageCount"></span></p>
+    <p>Neuestes Projekt: <span id="latestProject"></span></p>
+    <p>Erstes Projekt: <span id="firstProject"></span></p>
+
+    <iframe src="https://scratch.mit.edu/projects/813884200/embed/" width="480" height="360" frameborder="0" allowfullscreen></iframe>
+
+    <script>
+        // Nachrichtenzähler abrufen
+        fetch('https://api.scratch.mit.edu/users/milakatze123/messages/count/')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('messageCount').textContent = data.count;
+            })
+            .catch(error => {
+                console.error('Fehler beim Abrufen des Nachrichtenzählers:', error);
+                alert('Die Verbindung zu api.scratch.mit.edu konnte nicht hergestellt werden oder wurde verweigert!');
+            });
+
+        // Neuestes Projekt abrufen
+        fetch('https://api.scratch.mit.edu/users/milakatze123/projects?limit=1&offset=0')
+            .then(response => response.json())
+            .then(data => {
+                const latestProjectId = data[0].id;
+                document.getElementById('latestProject').innerHTML = `<a href="https://scratch.mit.edu/projects/${latestProjectId}/">${latestProjectId}</a>`;
+            })
+            .catch(error => {
+                console.error('Fehler beim Abrufen des neuesten Projekts:', error);
+                alert('Die Verbindung zu api.scratch.mit.edu konnte nicht hergestellt werden oder wurde verweigert!');
+            });
+
+        // Erstes Projekt (Projekt-ID 813884200) anzeigen
+        document.getElementById('firstProject').innerHTML = '<a href="https://scratch.mit.edu/projects/813884200/">813884200</a>';
+    </script>
+</body>
+</html>
